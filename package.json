@@ -1,0 +1,18 @@
+{
+  "name": "simple_student_response",
+  "version": "0.0.0",
+  "description": "A webapp that provides a channel for teacher ask questions in class and allow students to participate by scanning a QR code or other means to find the session, with option to remain anonymous.",
+  "main": "ssr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "interaction",
+    "classroom"
+  ],
+  "author": "Sea Eagle",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

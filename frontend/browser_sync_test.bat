@@ -1,0 +1,1 @@
+browser-sync start --server --no-online --files="**/*"

@@ -1,0 +1,57 @@
+.border-green {
+	border: 2px solid green;
+}
+.border-red {
+	border: 2px solid red;
+}
+.border-blue {
+	border: 2px solid blue;
+}
+.border-yellow {
+	border: 2px solid yellow;
+}
+.border-lightblue {
+	border: 2px solid lightblue;
+}
+.border-lightgreen {
+	border: 2px solid lightgreen;
+}
+.border-grey {
+	border: 2px solid grey;
+}
+.border-white {
+	border: 2px solid white;
+}
+.border-orange {
+	border: 2px solid orange;
+}
+
+
+.color-green {
+	background-color: green;
+}
+.color-red {
+	background-color: red;
+}
+.color-blue {
+	background-color: blue;
+}
+.color-yellow {
+	background-color: yellow;
+}
+.color-lightblue {
+	background-color: lightblue;
+}
+.color-lightgreen {
+	background-color: lightgreen;
+}
+.color-grey {
+	background-color: grey;
+}
+.color-white {
+	background-color: white;
+}
+.color-orange {
+	background-color: orange;
+}
+

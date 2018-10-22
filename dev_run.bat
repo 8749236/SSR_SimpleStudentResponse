@@ -1,0 +1,1 @@
+nodemon --inspect ssr.js

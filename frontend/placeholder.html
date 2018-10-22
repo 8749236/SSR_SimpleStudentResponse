@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>SSR - Simple Student Response</title>
+		<!-- Load CSS here -->
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/debug.css" type="text/css">
+		
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	</head>
+	<body>
+		<header class="">
+		</header>
+		<!--<nav class="website-navbar">-->
+		<!-- role="main" for compatibility issue with IE 11 and earlier-->
+		<main role="main">
+			<form id="userRegisterForm">
+				<input name="username" type="text" placeholder="Enter your username here">
+				<input name="password" type="password" placeholder="Enter your password here">
+				<input type="submit" value="Create account">
+			</form>
+			<form id="userLoginForm">
+				<input name="username" type="text" placeholder="Enter your username here">
+				<input name="password" type="password" placeholder="Enter your password here">
+				<input type="submit" value="Login">
+			</form>
+			<form id="loginStatusForm">
+				<input name="username" type="text" placeholder="Enter your username here">
+				<input type="submit" value="Check login status">
+			</form>
+			<form id="questionSubmissionForm">
+				<input name="title" type="text" placeholder="Enter the title of your question">
+				<input name="description" type="text" placeholder="Enter the description of your question">
+				<input name="type" type="text" value="text_mult_choice_one_ans" readonly>
+				<input name="choiceCount" type="number" value="4" readonly>
+				<input name="item1" type="text" placeholder="Answer 1">
+				<input name="item2" type="text" placeholder="Answer 2">
+				<input name="item3" type="text" placeholder="Answer 3">
+				<input name="item4" type="text" placeholder="Answer 4">
+				<input name="answer" type="text" placeholder="4">
+				<input type="submit" value="Create question">
+			</form>
+			<form id="questionRetrievalForm">
+				<input name="questionId" type="text" placeholder="Enter the id of your question">
+				<input type="submit" value="Get question">
+			</form>
+			<div id="questionDisplay">
+				Sample Question Display
+				<div id="questionTitle"></div>
+				<div id="questionDescription"></div>
+			</div>
+			<form id="questionResponseForm">
+				<input name="questionId" type="text">
+				<input name="choice" type="radio" value="1"><div>Response 1</div>
+				<input name="choice" type="radio" value="2"><div>Response 2</div>
+				<input name="choice" type="radio" value="3"><div>Response 3</div>
+				<input name="choice" type="radio" value="4"><div>Response 4</div>
+				<input type="submit" value="Submit Response">
+			</form>
+			<form id="questionStatisticForm">
+				<!--
+					question owner
+					answer count
+					answers
+					answers' owner
+				-->
+				<input name="questionId" type="text">
+				<label for="responseCount">Response Count</label>
+				<input name="responseCount" id="responseCount" type="number" value="0" readonly>
+				<input type="submit" value="Monitor Response">
+				<input id="monitorStatus" type="text" value="Standby" readonly>
+			</form>
+		</main>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/js/common.js"></script>
+	<script>
+		console.log("Hello world");
+		
+		$("#userRegisterForm").submit(function(e){
+			e.preventDefault();
+			console.log(e);
+		
+			var registerData = new FormData(this);
+			$.ajax({
+				url: "/api/users",
+				method: "POST",
+				data: registerData,
+				processData: false,
+				contentType: false,
+			}).done(function(data) {
+				console.log(data);
+				alert("Account created");
+			}).fail(Common.defaultAjaxFailureHandler);
+		});
+		
+		$("#userLoginForm").submit(function(e) {
+			e.preventDefault();
+			console.log(e);
+		
+			var loginData = new FormData(this);
+			var username = loginData.get("username");
+			console.log(loginData);
+			$.ajax({
+				url: "/api/sessions",
+				method: "POST",
+				data: loginData,
+				processData: false,
+				contentType: false,
+			}).done(function(data) {
+				console.log(data);
+				alert("Successfully created login session");
+			}).fail(Common.defaultAjaxFailureHandler);
+		});
+		
+		$("#loginStatusForm").submit(function(e) {
+			e.preventDefault();
+			var userData = new FormData(this);
+			var username = userData.get("username");
+			$.ajax({
+				url: "/api/users/" + username,
+				method: "GET"
+			}).done(function(data) {
+				console.log(data);
+				alert("Currently logged in");
+			}).fail(Common.defaultAjaxFailureHandler);
+		});
+		
+		$("#questionSubmissionForm").submit(function(e) {
+			e.preventDefault();
+			var questionData = new FormData(this);
+			console.log(Common.grabFormData(this));
+			$.ajax({
+				url: "/api/questions",
+				method: "POST",
+				data: questionData,
+				processData: false,
+				contentType: false,
+			}).done(function(data) {
+				console.log(data);
+				alert("Successfully created a question");
+			}).fail(Common.defaultAjaxFailureHandler);
+		});
+		
+		$("#questionRetrievalForm").submit(function(e) {
+			e.preventDefault();
+			var questionData = new FormData(this);
+			var questionId = questionData.get("questionId");
+			$.ajax({
+				url: "/api/questions/" + questionId,
+				method: "GET"
+			}).done(function(data) {
+				console.log(data);
+				$("#questionDisplay > #questionTitle").html(data.title);
+				$("#questionDisplay > #questionDescription").html(data.description);
+				alert("Question retrieval success");
+			}).fail(Common.defaultAjaxFailureHandler);
+		});
+		
+		$("#questionResponseForm").submit(function(e) {
+			e.preventDefault();
+			var responseData = new FormData(this);
+			var questionId = responseData.get("questionId");
+			console.log(Common.grabFormData(this), responseData, questionId);
+			if(!responseData.get("choice")) {
+				// Choice of 0 is reserved
+				// Choice with negative value is an invalid response..
+				responseData.set("choice", -1);
+			}
+			$.ajax({
+				url: "/api/responses",
+				method: "POST",
+				data: responseData,
+				processData: false,
+				contentType: false,
+			}).done(function(data) {
+				console.log(data);
+				alert("Response submission success");
+			}).fail(Common.defaultAjaxFailureHandler);
+		});
+		
+		var esResponseMonitor = null;
+		$("#questionStatisticForm").submit(function(e) {
+			e.preventDefault();
+			var questionId = new FormData(this).get("questionId");
+			if(EventSource) {
+				if(!esResponseMonitor) {
+					esResponseMonitor = new EventSource("/api/questions/" + questionId + "/statistic");
+					esResponseMonitor.onerror = function(e) {
+						console.log(e);
+						//alert("Failed to start live statistic monitoring: ");
+						// Destroy existing event source
+						esResponseMonitor = null;
+						$("#monitorStatus").val("Error");
+					}
+					esResponseMonitor.addEventListener("question." + questionId + ".statistic.init", function(e) {
+						// on statistic initialize
+						// Receive all existing data to compute statistic
+						var existingResponses = JSON.parse(e.data);
+						console.log(e, existingResponses);
+						$("#responseCount").val(existingResponses.length);
+						$("#monitorStatus").val("Live");
+					});
+					esResponseMonitor.addEventListener("question." + questionId + ".statistic.update", function(e) {
+						// on statistic update
+						// New response just came in
+						var newResponse = JSON.parse(e.data);
+						console.log(e, newResponse);
+						$("#responseCount").val(parseInt($("#responseCount").val()) + 1);
+					});
+				}
+			} else {
+				
+			}
+		});
+	</script>
+</html>
