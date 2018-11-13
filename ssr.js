@@ -1,6 +1,7 @@
 // Uses express
 var express = require('express');
 var session = require('express-session');
+var path = require('path');
 
 var app = express();
 //app.set('trust proxy', 1) // trust first proxy
@@ -18,7 +19,7 @@ var sess = {
 //}
 
 
-// 3rd party includes
+// 3rd party includessssssssssss
 const bodyParser = require('body-parser');
 var app = express();
 var multer = require('multer');
@@ -225,7 +226,7 @@ app.post('/api/responses', upload.fields([]), checkAuth, function(req, res, next
 			res.status(201).json(newDoc._id);
 			
 			// Notify all listening browser
-			sse.sendAll(newDoc, "question." + formData.questionId + ".statistic.update");
+			sse.sendAll("questions." + formData.questionId + ".responses.update", newDoc);
 		}
 		return next();
 	});
@@ -253,17 +254,37 @@ app.get('/api/responses/:response_id', upload.fields([]), checkAuth, function(re
 // 		for every question
 //		Current design will route all responses to all user
 //		Which is an enormous privacy-security issue
-app.get('/api/questions/:question_id/statistic', checkAuth, sse.setup, function(req, res, next) {
+app.get('/api/questions/:question_id/responses/', checkAuth, function(req, res, next) {
 	var questionId = req.params.question_id;
 	
-	responsesDB.find({}, function(err, docs) {
+	responsesDB.find({ "questionId": questionId }, function(err, docs) {
 		if(err) {
 			// Error, what to do here? other than dump error
 			console.log(err);
+			res.status(500).json(err);
 		} else {
-			res.sseSend(docs, "question." + questionId + ".statistic.init");
+			//rslt = sse.sendToUsers([req.session.user.username], "questions." + questionId + ".responses.init", docs);
+			//if(rslt.length == 0) {
+			//	res.status(200).json("Statistics has been sent through SSE");
+			res.status(200).json(docs);
+			//} else {
+			//	console.log("SSE connection has not been established for users: ", rslt);
+			//	res.status(400).json("SSE connection has not been established");
+			//}
 		}
 	});
+});
+
+app.get('/api/events', checkAuth, sse.setup, function(req, res, next) {
+	// Do nothing, sse.setup() does all the work
+});
+
+app.get('*', function(req, res, next) {
+	// Skip specific file requests
+	if(req.url.search(/\..*/) >= 0) {
+		return next();
+	}
+	res.sendFile(path.resolve('frontend/index.html'));
 });
 
 app.listen(3000, function () {

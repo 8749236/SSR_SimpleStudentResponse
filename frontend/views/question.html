@@ -1,0 +1,17 @@
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title" ng-bind="question.title">Question Title</h5>
+		<p class="card-text" ng-bind="question.description"></p>
+	</div>
+	<ul class="list-group list-group-flush" ng-init="response = responseStore.buildResponse({questionId: questionId, type: 'mult_choice'})">
+		<!-- Expanding available choices -->
+		<li class="list-group-item" ng-repeat="choice in question.choices track by $index">
+			<input name="answer" type="radio" value={{$index}} ng-model="response.answer">
+			<label ng-bind="question.choices[$index]">Choice 1</label>
+		</li>
+	</ul>
+	<div class="card-body">
+		<input type="submit" class="btn btn-primary" value="Submit response" ng-click="onSubmitResponse(response)">
+		<label class="" ng-show="responseSubmitted">Response has been submitted</label>
+	</div>
+</div>

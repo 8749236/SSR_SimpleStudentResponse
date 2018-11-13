@@ -1,9 +1,10 @@
 module.exports = {
 	setup: _sseSetup,
+	sendToUsers: _sseSendToUsers,
 	sendAll: _sseSendAll
 }
 
-var _sseConnections = [];
+var _sseConnections = {};
 function _sseSetup(req, res, next) {
 	// Setup header
 	res.writeHead(200, {
@@ -15,14 +16,18 @@ function _sseSetup(req, res, next) {
 	// Store connection
 	
 	// Setup helper methods
-	res.sseSend = function(msg, eventName, id) {
+	res.sseSend = function(eventName, msg, eventType, id) {
 		if(id) {
 			res.write("id: " + id + "\n");
 		}
-		if(eventName) {
-			res.write("event: " + eventName + "\n");
+		if(eventType) {
+			res.write("event: " + eventType + "\n");
 		}
-		res.write("data: " + JSON.stringify(msg) + "\n\n");
+		var dataToSend = {
+			eventName : eventName,
+			msg: msg
+		}
+		res.write("data: " + JSON.stringify(dataToSend) + "\n\n");
 	};
 	res.sseClose = function() {
 		// Returns 204, No Content
@@ -32,13 +37,31 @@ function _sseSetup(req, res, next) {
 			"Content-Type": "text/plain"
 		});
 	};
-	_sseConnections.push(res);
+	// Key is username
+	_sseConnections[req.session.user.username] = res;
 	return next();
 }
 
-function _sseSendAll(msg, eventName, id) {
-	_sseConnections.forEach(function(conn, index, arr) {
-		conn.sseSend(msg, eventName, id);
+function _sseSendAll(eventName, msg, eventType, id) {
+	// Loop through all keys
+	for(var key in _sseConnections) {
+		_sseConnections[key].sseSend(eventName, msg, eventType, id);
 		// What error does .write() throw again?
-	});
+		// We need to catch that in case a connection has already closed
+	}
 }
+
+function _sseSendToUsers(usernames, eventName, msg, eventType, id) {
+	var failedList = [];
+	for(var username of usernames) {
+		if(_sseConnections[username]) {
+			_sseConnections[username].sseSend(eventName, msg, eventType, id);
+		} else {
+			failedList.push(username);
+		}
+	}
+	return failedList;
+}
+
+// TODO: needs a feature that only sends information
+// to user that actually needs it; this also removes privacy and sercurity risks

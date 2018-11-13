@@ -1,4 +1,11 @@
 Common = (function () {
+	function defaultAjaxSuccessHandlerGenerator(msg) {
+		return function(data) {
+			console.log(data);
+			alert(msg);
+		}
+	}
+	
 	function defaultAjaxFailureHandler(xhr, status, errorText) {
 		alert(errorText + ": " + xhr.responseText);
 	}
@@ -12,8 +19,14 @@ Common = (function () {
 		return tmp;
 	}
 	
+	function isEmptyString(str) {
+		return !str || str.length <= 0;
+	}
+	
 	return {
 		grabFormData: grabFormData,
-		defaultAjaxFailureHandler: defaultAjaxFailureHandler
+		defaultAjaxFailureHandler: defaultAjaxFailureHandler,
+		defaultAjaxSuccessHandlerGenerator: defaultAjaxSuccessHandlerGenerator,
+		isEmptyString: isEmptyString
 	};
 }) ();
