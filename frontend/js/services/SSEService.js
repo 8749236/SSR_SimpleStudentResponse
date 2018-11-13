@@ -31,8 +31,6 @@ app.service('SSEService', function($rootScope) {
 				this._eventSource.onerror = function(e) {
 					console.log(e);
 					//alert("Failed to start live statistic monitoring: ");
-					// Destroy existing event source
-					this._eventSource = null;
 					$rootScope.$broadcast("SSEService.error", e);
 				};
 				this._eventSource.onmessage = function(e) {
