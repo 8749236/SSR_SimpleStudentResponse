@@ -1,3 +1,9 @@
+// Constants
+const PORT_HTTP_DEBUG = 3000;
+const PORT_HTTPS_DEBUG = 3001;
+const PORT_HTTP = 80;
+const PORT_HTTPS = 443;
+
 // Uses express
 var express = require('express');
 var session = require('express-session');
@@ -287,6 +293,19 @@ app.get('*', function(req, res, next) {
 	res.sendFile(path.resolve('frontend/index.html'));
 });
 
-app.listen(3000, function () {
-  console.log('App listening on port 3000')
+var debug = false;
+// loop through process.argv
+console.log(process.argv);
+process.argv.forEach(function (val, index, array) {
+  console.log(index + ': ' + val);
+	if(val.toLowerCase() == "-debug") {
+		debug = true;
+	}
+});
+
+
+var port_insecure = debug ? PORT_HTTP_DEBUG : PORT_HTTP;
+var port_secure = debug ? PORT_HTTPS_DEBUG : PORT_HTTPS;
+app.listen(port_insecure, function () {
+  console.log('App listening on port ' + port_insecure)
 });
