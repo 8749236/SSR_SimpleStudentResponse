@@ -1,8 +1,8 @@
 // Constants
 const PORT_HTTP_DEBUG = 3000;
 const PORT_HTTPS_DEBUG = 3001;
-const PORT_HTTP = 80;
-const PORT_HTTPS = 443;
+const PORT_HTTP = process.env.PORT || 80;
+const PORT_HTTPS = process.env.PORT || 443;
 
 // Uses express
 var express = require('express');
