@@ -236,7 +236,7 @@ app.get('/api/questions/:question_id', upload.fields([]), checkAuth, function(re
 // TODO: Support ranges, sorting
 //		Select first 50, for example
 //		Sort by date created
-app.get('/api/questions/:question_id', upload.fields([]), checkAuth, function(req, res, next) {	
+app.get('/api/users/:username/questions/', upload.fields([]), checkAuth, function(req, res, next) {	
 	var username = req.params.username;
 	collections.questions.find({ owner: username }).toArray(function(err, docs) {
 		if(err) {

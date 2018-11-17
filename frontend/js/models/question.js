@@ -32,6 +32,23 @@ class QuestionStore {
 		}).done(processData)
 		.fail(onFail ? onFail : Common.defaultAjaxFailureHandler);
 	}
+	
+	getQuestionsByUsername(username, onSuccess, onFail) {
+		var onDone = (function(questionBuildFunc, callback) {
+			return function(rawQuestions) {
+				var rslt = [];
+				for(var raw of rawQuestions) {
+					rslt.push(questionBuildFunc(raw));
+				}
+				callback(rslt);
+			};
+		})(this.buildQuestion, onSuccess ? onSuccess : this._defaultGetSuccess);
+		$.ajax({
+			url: "/api/users/" + username + "/questions/",
+			method: "GET"
+		}).done(onDone)
+		.fail(onFail ? onFail : Common.defaultAjaxFailureHandler);
+	}
 }; QuestionStore.typeMap = {};
 
 
