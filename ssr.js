@@ -232,6 +232,22 @@ app.get('/api/questions/:question_id', upload.fields([]), checkAuth, function(re
 	});
 });
 
+// Questions GET by username
+// TODO: Support ranges, sorting
+//		Select first 50, for example
+//		Sort by date created
+app.get('/api/questions/:question_id', upload.fields([]), checkAuth, function(req, res, next) {	
+	var username = req.params.username;
+	collections.questions.find({ owner: username }).toArray(function(err, docs) {
+		if(err) {
+			res.status(500).json(err);
+		} else {
+			res.status(200).json(docs);
+		}
+		return next();
+	});
+});
+
 // Response, CRUD
 // Idea:
 //		Response itself does not care what question it is associated to
