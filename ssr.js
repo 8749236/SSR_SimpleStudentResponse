@@ -1,4 +1,7 @@
 // Constants
+const COLLECTION_USERS_NAME = "users";
+const COLLECTION_QUESTIONS_NAME = "questions";
+const COLLECTION_RESPONSES_NAME = "responses";
 const PORT = process.env.PORT || 3000;
 var DEBUG = false;
 
@@ -14,36 +17,53 @@ process.argv.forEach(function (val, index, array) {
 // Uses express
 var express = require('express');
 var session = require('express-session');
+var MongoDBStore = require('connect-mongodb-session')(session);
 var path = require('path');
 
 var app = express();
 //app.set('trust proxy', 1) // trust first proxy
-var sess = {
-	name: 'b4.ssr.sid',
-  secret: 's0m3th1ng_n0t_s0_sp3c!al',
-  cookie: { secure: !true },
-	resave: false,
-	saveUninitialized: false
-};
  
 //if (app.get('env') === 'production') {
 //  app.set('trust proxy', 1); // trust first proxy
 //  sess.cookie.secure = true; // serve secure cookies
 //}
 
+var sessionStore = new MongoDBStore({
+  uri: mongoURL,
+  collection: 'SSRSessions'
+});
 
-// 3rd party includessssssssssss
+// Catch errors in sessionStore
+sessionStore.on('error', function(error) {
+  console.log(error);
+  throw new Error("Session store has encountered an error, see preceding logs for more details");
+});
+
+var sess = {
+	name: 'b4.ssr.sid',
+  secret: 's0m3th1ng_n0t_s0_sp3c!al',
+  cookie: { secure: !true },
+	resave: false,
+	saveUninitialized: false,
+	
+};
+
+// 3rd party includes
 const bodyParser = require('body-parser');
 var app = express();
 var multer = require('multer');
 var upload = multer();
 
-var Datastore = require('nedb');
-var usersDB = new Datastore({ filename: 'db/users.db', autoload: true});
-usersDB.ensureIndex({ fieldName: 'username', unique: true, timestampData: true });
-var questionsDB = new Datastore({ filename: 'db/questions.db', autoload: true, timestampData: true});
-var responsesDB = new Datastore({ filename: 'db/responses.db', autoload: true, timestampData: true});
-responsesDB.ensureIndex({ fieldName: 'question_id', timestampData: true });
+var MongoClient = require('mongodb');
+var mongoURL = process.env.MONGODB_URI || "mongodb://localhost:27017/test";
+var db = null;
+var collections = {};
+
+//var usersDB = new Datastore({ filename: 'db/users.db', autoload: true});
+//usersDB.ensureIndex({ fieldName: 'username', unique: true, timestampData: true });
+//var questionsDB = new Datastore({ filename: 'db/questions.db', autoload: true, timestampData: true});
+//var responsesDB = new Datastore({ filename: 'db/responses.db', autoload: true, timestampData: true});
+//responsesDB.ensureIndex({ fieldName: 'question_id', timestampData: true });
 
 // Local includes
 var userManager = require('./UserManager.js');
@@ -89,7 +109,7 @@ app.post('/api/users', upload.fields([]), function(req, res, next) {
 	
 	var userNew = userManager.createUserFromForm(formData);
 	
-	usersDB.insert(userNew, function(err, newDoc) {
+	collections.users.insertOne(userNew, function(err, newDoc) {
 		if(err) {
 			if(err.errorType == "uniqueViolated") {
 				res.status(409).json("Username already exists, please use a different username");
@@ -98,7 +118,7 @@ app.post('/api/users', upload.fields([]), function(req, res, next) {
 			}
 		} else {
 			// 201 - CREATED..
-			res.status(201).json(newDoc.username);
+			res.status(201).json(newDoc.ops[0].username);
 		}
 		return next();
 	});
@@ -135,7 +155,7 @@ app.post('/api/sessions', upload.fields([]), function(req, res, next) {
 	}
 	
 	var userLogin = userManager.createUserFromForm(formData);	
-	usersDB.findOne({ username: key }, function(err, doc) {
+	collections.users.findOne({ username: key }, function(err, doc) {
 		if(err) {
 			res.status(500).json(err);
 		} else if(doc) {
@@ -184,12 +204,12 @@ app.post('/api/questions', upload.fields([]), checkAuth, function(req, res, next
 	var formData = req.body;
 	var questionNew = questionManager.createQuestionFromForm(formData);
 	questionNew.setOwner(req.session.user.username);
-	questionsDB.insert(questionNew, function(err, newDoc) { 
+	collections.questions.insertOne(questionNew, function(err, newDoc) { 
 		if(err) {
 			res.status(500).json(err);
 		} else {
 			// 201 - CREATED..
-			res.status(201).json(newDoc._id);
+			res.status(201).json(newDoc.insertedId.toString());
 		}
 		return next();
 	});
@@ -199,7 +219,8 @@ app.post('/api/questions', upload.fields([]), checkAuth, function(req, res, next
 // Does not support get entire collection
 app.get('/api/questions/:question_id', upload.fields([]), checkAuth, function(req, res, next) {	
 	var key = req.params.question_id;
-	questionsDB.findOne({ _id: key }, function(err, doc) {
+	var o_id = new MongoClient.ObjectID(key);
+	collections.questions.findOne({ _id: o_id }, function(err, doc) {
 		if(err) {
 			res.status(500).json(err);
 		} else if(doc) {
@@ -231,12 +252,12 @@ app.post('/api/responses', upload.fields([]), checkAuth, function(req, res, next
 	}
 	var responseNew = responseManager.createResponseFromForm(formData);
 	responseNew.setOwner(req.session.user.username);
-	responsesDB.insert(responseNew, function(err, newDoc) { 
+	collections.responses.insertOne(responseNew, function(err, newDoc) { 
 		if(err) {
 			res.status(500).json(err);
 		} else {
 			// 201 - CREATED..
-			res.status(201).json(newDoc._id);
+			res.status(201).json(newDoc.insertedId.toString());
 			
 			// Notify all listening browser
 			sse.sendAll("questions." + formData.questionId + ".responses.update", newDoc);
@@ -248,7 +269,8 @@ app.post('/api/responses', upload.fields([]), checkAuth, function(req, res, next
 // Response Read, GET by id
 app.get('/api/responses/:response_id', upload.fields([]), checkAuth, function(req, res, next) {	
 	var key = req.params.response_id;
-	responsesDB.findOne({ _id: key }, function(err, doc) {
+	var o_id = new MongoClient.ObjectID(key);
+	collections.responses.findOne({ _id: o_id }, function(err, doc) {
 		if(err) {
 			res.status(500).json(err);
 		} else if(doc) {
@@ -270,7 +292,7 @@ app.get('/api/responses/:response_id', upload.fields([]), checkAuth, function(re
 app.get('/api/questions/:question_id/responses/', checkAuth, function(req, res, next) {
 	var questionId = req.params.question_id;
 	
-	responsesDB.find({ "questionId": questionId }, function(err, docs) {
+	collections.responses.find({ "questionId": questionId }).toArray(function(err, docs) {
 		if(err) {
 			// Error, what to do here? other than dump error
 			console.log(err);
@@ -300,7 +322,24 @@ app.get('*', function(req, res, next) {
 	res.sendFile(path.resolve('frontend/index.html'));
 });
 
-
-app.listen(PORT, function () {
-  console.log('App listening on port ' + PORT)
+// Wait for database
+MongoClient.connect(mongoURL, {useNewUrlParser: true }, function(err, client) {
+	if(err) {
+    console.log(err);
+    process.exit(1);
+	}
+	db = client.db();
+	
+	collections.users = db.collection(COLLECTION_USERS_NAME);
+	collections.users.createIndex("username", { unique: true });
+	collections.questions = db.collection(COLLECTION_QUESTIONS_NAME);
+	collections.questions.createIndex("owner");
+	collections.responses = db.collection(COLLECTION_RESPONSES_NAME);
+	collections.responses.createIndex("question_id");
+	
+	console.log("Database connection established");
+	// Starts listening	
+	app.listen(PORT, function () {
+		console.log('App listening on port ' + PORT)
+	});
 });
