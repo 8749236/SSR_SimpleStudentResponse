@@ -7,6 +7,7 @@ module.exports = {
 		delete tmp.title;
 		delete tmp.description;
 		delete tmp.type;
+		delete tmp.owner ; // Do NOT accept owners specified by frontend
 		question.setData(tmp);
 		return question;
 	}, 

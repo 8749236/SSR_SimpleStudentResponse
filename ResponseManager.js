@@ -10,6 +10,7 @@ module.exports = {
 		delete tmp.questionId;
 		delete tmp.type;
 		delete tmp.answer;
+		delete tmp.owner ; // Do NOT accept owners specified by frontend
 		response.setData(tmp);
 		return response;
 	}, 

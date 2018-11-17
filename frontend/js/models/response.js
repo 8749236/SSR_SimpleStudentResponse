@@ -38,6 +38,7 @@ class ResponseBase extends ICRUD {
 		this.questionId = rawData.questionId ? rawData.questionId : null;
 		this.type = rawData.type ? rawData.type : null;
 		this.answer = rawData.answer ? rawData.answer : null;
+		this.owner = rawData.owner ? rawData.owner : null;
 	}
 
 	validate() {throw new Error(SSR_ERRORS.UNIMPLEMENTED_METHOD);};
