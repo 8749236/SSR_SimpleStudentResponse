@@ -24,6 +24,7 @@ app.controller('LoginController', function($rootScope, $scope, $location) {
 			console.log(data);
 			
 			$rootScope.activeUser = userTmp;
+			localStorage.setItem("activeUser", JSON.stringify($rootScope.activeUser));
 			
 			// TODO: fancy message box
 			alert("Successfully created login session");

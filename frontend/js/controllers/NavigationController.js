@@ -1,7 +1,5 @@
 
 app.controller('NavigationController', function($scope, $location, SSEService) {
-	SSEService.setURL("/api/events/");
-
 	$scope.onGotoHomePage = function() {
 		console.log("Goto homepage");
 		$location.path("/");

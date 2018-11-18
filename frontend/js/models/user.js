@@ -2,7 +2,7 @@ class User {
 	constructor(rawData) {
 		this.username = rawData.username;
 		this.password = rawData.password;
-		this.data = {};
+		this.data = rawData.data ? rawData.data : {};
 	}
 	
 	

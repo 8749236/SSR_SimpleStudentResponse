@@ -43,3 +43,18 @@ app.config(function($routeProvider, $locationProvider) {
 		// Need base tag within head tag to work
 		$locationProvider.html5Mode(true);
 });
+
+app.run(function($rootScope, SSEService) {
+	var prevUserJson = localStorage.getItem("activeUser");
+	if(prevUserJson) {			
+		var prevUser = JSON.parse(prevUserJson);
+		$.ajax({
+			url: "/api/users/" + prevUser.username,
+			method: "GET"
+		}).done(function(data) {
+			console.log("Already logged in as: " + prevUser.username);
+			$rootScope.activeUser = new User(data);
+		}).fail(Common.defaultAjaxFailureHandler);
+	}
+	SSEService.setURL("/api/events/");
+});
