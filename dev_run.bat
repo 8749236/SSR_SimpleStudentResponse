@@ -1,1 +1,1 @@
-nodemon --inspect ssr.js
+nodemon --ignore frontend/* --inspect ssr.js
