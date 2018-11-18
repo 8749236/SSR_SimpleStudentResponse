@@ -1,6 +1,8 @@
 Home page placeholder
 
-<div ng-controller="HomePageController">
+<div ng-controller="HomePageController" ng-init="
+	options.test = 1
+">
 	What would you like to do?
 	<button type="button" class="btn btn-primary" ng-click="onGotoLogin()">Login as a user</button>
 	<button type="button" class="btn btn-primary" ng-click="onGotoRegister()">Register an account</button>
@@ -9,4 +11,24 @@ Home page placeholder
 		Find a question
 	</button>
 	<button type="button" class="btn btn-primary" ng-click="onGotoComposer()">Compose a question</button>
+
+	
+	<div class="card border-warning mx-auto" style="max-width: 640px;">
+		<div class="card-header bg-warning text-center">
+			<h5>SSR development plan (TODO list)</h5>
+		</div>
+		<div class="card-body">
+			<ul class="list-group">
+				<li class="list-group-item">
+					Make user's question list fully functional
+				</li>
+				<li class="list-group-item">
+					Create a static question display using angularJS directive
+				</li>
+			</ul>
+		</div>
+		<div class="card-footer">
+			<small class="text-muted">Last updated 2018-11-17 22:24</small>
+		</div>
+	</div>
 </div>
