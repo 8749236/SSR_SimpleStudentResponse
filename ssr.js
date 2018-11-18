@@ -162,11 +162,11 @@ app.post('/api/sessions', upload.fields([]), function(req, res, next) {
 			var userFound = userManager.createUserFromDBEntry(doc);
 			// Authentication
 			if(userFound.authenticate(formData)) {
-				console.log("success");
+				console.log("Successfully authenticated user: " + userFound.username);
 				req.session.user = userFound;
 				res.json(userFound);
 			} else {
-				console.log("failure")
+				console.log("Failed to authenticate user: " + userFound.username);
 				req.session.user = null;
 				res.status(401).json("Your username or password is incorrect");
 			}
