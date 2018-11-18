@@ -72,6 +72,7 @@ class QuestionBase extends ICRUD {
 	constructor(rawData) {
 		super();
 		rawData = rawData ? rawData : {};
+		this.id = rawData._id ? rawData._id : null;
 		this.title = rawData.title ? rawData.title : null;
 		this.description = rawData.description ? rawData.description : null;
 		this.type = rawData.type ? rawData.type : null;

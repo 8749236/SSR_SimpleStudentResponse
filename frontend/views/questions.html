@@ -1,6 +1,42 @@
 <div>
-	<div>Question list that belongs to the user</div>
-	<ul>
-		<li ng-repeat="v in questions track by $index">{{v}}</li>
-	</ul>
+	<div class="card border-primary">
+		<div class="card-header border-primary">
+			Your questions
+		</div>
+		<div class="card-body card-group">		
+			<div class="card" ng-repeat="q in questions track by $index">
+				<div class="card-header">
+					<h5 class="card-title" ng-bind="q.title"></h5>
+				</div>
+				<div class="card-body">
+					<p class="card-text">
+						<small class="">Type: <span ng-bind="q.type"></span></small>
+						<br>
+						<small class="text-muted">ID: <span ng-bind="q.id"></span></small>
+					</p>
+					<p class="card-text" ng-bind="q.description"></p>
+					<div class="text-right">
+						<div class="btn-group">
+							<button type="button" class="btn btn-danger">View</button>
+							<button type="button" class="btn btn-danger">Share</button>
+							<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+								<span class="sr-only">Toggle Dropdown</span>
+							</button>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">Edit</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Monitor</a>
+								<a class="dropdown-item" href="#">Statistic</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card-footer">					
+					<small class="text-muted">Last updated 3 mins ago</small>
+					<br>
+					<small class="text-muted">Created 3 mins ago</small>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

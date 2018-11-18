@@ -35,6 +35,7 @@ class ResponseBase extends ICRUD {
 	constructor(rawData) {
 		super();
 		rawData = rawData ? rawData : {};
+		this.id = rawData._id ? rawData._id : null;
 		this.questionId = rawData.questionId ? rawData.questionId : null;
 		this.type = rawData.type ? rawData.type : null;
 		this.answer = rawData.answer ? rawData.answer : null;
