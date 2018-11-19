@@ -54,6 +54,7 @@ var app = express();
 var multer = require('multer');
 var upload = multer();
 
+console.log(process.env);
 var MongoClient = require('mongodb');
 var mongoURL = process.env.MONGODB_URI || "mongodb://localhost:27017/test";
 var db = null;
