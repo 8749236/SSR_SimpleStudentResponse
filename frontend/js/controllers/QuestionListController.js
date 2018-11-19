@@ -9,4 +9,20 @@ app.controller('QuestionListController', function($scope, $rootScope, $location)
 			$scope.$apply();
 		}
 	);
+	
+	$scope.onViewQuestion = function(question) {
+		console.log("View question: ", question);
+	}
+	
+	$scope.onMonitorQuestion = function(question) {
+		console.log("Monitor question: ", question);
+		$scope.onGotoStatistic(question.id);
+	};
+	
+	$scope.onShareQuestion = function(question) {
+		var absLinkPrefix = "/questions/"
+		console.log("Share question: ", question);
+		$("#questionLinkQR").empty();
+		$("#questionLinkQR").qrcode(window.location.origin + absLinkPrefix + question.id);
+	};
 });

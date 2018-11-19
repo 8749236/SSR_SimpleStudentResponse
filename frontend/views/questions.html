@@ -17,16 +17,16 @@
 					<p class="card-text" ng-bind="q.description"></p>
 					<div class="text-right">
 						<div class="btn-group">
-							<button type="button" class="btn btn-danger">View</button>
-							<button type="button" class="btn btn-danger">Share</button>
+							<button type="button" class="btn btn-danger" ng-click="onViewQuestion">View</button>
+							<button type="button" class="btn btn-danger" ng-click="onShareQuestion(q)" data-toggle="modal" data-target="#modalShareQuestion">Share</button>
 							<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
 								<span class="sr-only">Toggle Dropdown</span>
 							</button>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="#">Edit</a>
+								<button class="dropdown-item" ng-click="onEditQuestion" disabled>Edit</button>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#">Monitor</a>
-								<a class="dropdown-item" href="#">Statistic</a>
+								<button class="dropdown-item" ng-click="onMonitorQuestion(q)">Monitor</button>
+								<button class="dropdown-item" ng-click="onShowQuestionStatistic(q)" disabled>Statistic</button>
 							</div>
 						</div>
 					</div>
