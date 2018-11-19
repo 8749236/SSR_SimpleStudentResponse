@@ -3,7 +3,10 @@ const COLLECTION_USERS_NAME = "users";
 const COLLECTION_QUESTIONS_NAME = "questions";
 const COLLECTION_RESPONSES_NAME = "responses";
 const PORT = process.env.PORT || 3000;
+var mongoURL = process.env.MONGODB_URI || "mongodb://localhost:27017/test";
 var DEBUG = false;
+
+console.log("mongoURL = ", mongoURL);
 
 // Loop through process.argv
 console.log(process.argv);
@@ -55,11 +58,8 @@ var multer = require('multer');
 var upload = multer();
 
 var MongoClient = require('mongodb');
-var mongoURL = process.env.MONGODB_URI || "mongodb://localhost:27017/test";
 var db = null;
 var collections = {};
-
-console.log("mongoURL = ", mongoURL);
 
 //var usersDB = new Datastore({ filename: 'db/users.db', autoload: true});
 //usersDB.ensureIndex({ fieldName: 'username', unique: true, timestampData: true });
