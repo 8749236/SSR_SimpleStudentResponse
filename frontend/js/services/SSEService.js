@@ -56,5 +56,5 @@ app.service('SSEService', function($rootScope) {
 		}
 		$rootScope.$broadcast("SSEService.stop");
 	};
-	console.log(this);
+	console.log("SSEService", this);
 });
