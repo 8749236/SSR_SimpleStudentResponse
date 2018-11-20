@@ -24,7 +24,7 @@ app.controller('QuestionListController', function($scope, $rootScope, $location,
 		var absLinkPrefix = "/questions/"
 		var questionLink = window.location.origin + absLinkPrefix + question.id;
 		console.log("Share question: ", question);
-		ModalDataService.setData("modalShareQuestion", {link: questionLink});
+		ModalDataService.setData("modalQuestionShare", {link: questionLink});
 		$("#questionLinkQR").empty();
 		$("#questionLinkQR").qrcode(questionLink);
 	};
