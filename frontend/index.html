@@ -107,11 +107,34 @@
 						<div class="modal-body">
 							<form>
 								<div class="form-group">
-									<label for="questionId">Question ID</label>
-									<input name="questionId" class="form-control" type="text" ng-model="questionId" placeholder="Enter an id to find a question">
+									<label for="questionLink">Question link</label>
+									<input name="questionLink" class="form-control" type="text" ng-model="modal.shareQuestion.link">
+								</div>							
+								<div class="form-group text-center">
+									<div>Scan this with camera to find question</div>
 									<div id="questionLinkQR"></div>
 								</div>
 							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="modalQuestionDisplay" tabindex="-1">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalQuestionDisplayLabel" >Question as seen by student</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<ssr-question question="modal.questionDisplay.question"></ssr-question>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -147,6 +170,8 @@
 	<!-- Local Angular JS related javascript files -->
 	<script src="js/init_app.js"></script>
 	<script src="js/services/SSEService.js"></script>
+	<script src="js/services/ModalDataService.js"></script>
+	<script src="js/directives/directiveQuestion.js"></script>
 	<script src="js/controllers/HomePageController.js"></script>
 	<script src="js/controllers/LoginController.js"></script>
 	<script src="js/controllers/NavigationController.js"></script>

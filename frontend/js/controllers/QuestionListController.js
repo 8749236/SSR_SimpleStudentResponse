@@ -1,4 +1,4 @@
-app.controller('QuestionListController', function($scope, $rootScope, $location) {
+app.controller('QuestionListController', function($scope, $rootScope, $location, ModalDataService) {
 	var questionStore = new QuestionStore();
 	$scope.questions = [0, 0, 1, 2, 3];
 	
@@ -11,6 +11,7 @@ app.controller('QuestionListController', function($scope, $rootScope, $location)
 	);
 	
 	$scope.onViewQuestion = function(question) {
+		ModalDataService.setData("modalQuestionDisplay", {question: question});
 		console.log("View question: ", question);
 	}
 	
@@ -21,8 +22,10 @@ app.controller('QuestionListController', function($scope, $rootScope, $location)
 	
 	$scope.onShareQuestion = function(question) {
 		var absLinkPrefix = "/questions/"
+		var questionLink = window.location.origin + absLinkPrefix + question.id;
 		console.log("Share question: ", question);
+		ModalDataService.setData("modalShareQuestion", {link: questionLink});
 		$("#questionLinkQR").empty();
-		$("#questionLinkQR").qrcode(window.location.origin + absLinkPrefix + question.id);
+		$("#questionLinkQR").qrcode(questionLink);
 	};
 });

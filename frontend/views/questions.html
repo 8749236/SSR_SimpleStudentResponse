@@ -17,7 +17,7 @@
 					<p class="card-text" ng-bind="q.description"></p>
 					<div class="text-right">
 						<div class="btn-group">
-							<button type="button" class="btn btn-danger" ng-click="onViewQuestion">View</button>
+							<button type="button" class="btn btn-danger" ng-click="onViewQuestion(q)" data-toggle="modal" data-target="#modalQuestionDisplay">View</button>
 							<button type="button" class="btn btn-danger" ng-click="onShareQuestion(q)" data-toggle="modal" data-target="#modalShareQuestion">Share</button>
 							<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
 								<span class="sr-only">Toggle Dropdown</span>
