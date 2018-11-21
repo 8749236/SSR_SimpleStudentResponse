@@ -28,6 +28,21 @@ class ResponseStore {
 		}).done(processData)
 		.fail(onFail ? onFail : Common.defaultAjaxFailureHandler);
 	}
+	
+	getResponseByQuestionId(questionId, onSuccess, onFail) {
+		var processData = (function(responseBuildFunc, callback) {
+			return function(rawResponses) {
+				callback(rawResponses.map(raw => responseBuildFunc(raw)));
+			}
+		})(this.buildResponse, onSuccess ? onSuccess : this._defaultGetSuccess);
+		
+		// Ask for responses from this particular question
+		$.ajax({
+			url: "/api/questions/" + questionId + "/responses",
+			method: "GET"
+		}).done(processData)
+		.fail(onFail ? onFail : Common.defaultAjaxFailureHandler);
+	}
 }; ResponseStore.typeMap = {};
 
 
