@@ -148,13 +148,13 @@
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h5 class="modal-title" id="modalQuestionStatisticLabel" >Question past statistic</h5>
+							<h5 class="modal-title" id="modalQuestionStatisticLabel" >Question statistic</h5>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
 						<div class="modal-body">
-							<ssr-statistic question="modal.questionStatistic.question"></ssr-statistic>
+							<ssr-statistic data-response-counts="modal.questionStatistic.responseCounts"></ssr-statistic>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -175,6 +175,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
 	<script src="https://code.highcharts.com/highcharts.src.js"></script>
+	<script src="https://code.highcharts.com/modules/data.js"></script>
 	<script src="js/libs/instascan.min.js"></script>
 	<!-- Load home-grown javascript file here -->
 	<script src="js/errors.js"></script>
