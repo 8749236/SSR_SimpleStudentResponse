@@ -142,6 +142,26 @@
 					</div>
 				</div>
 			</div>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="modalQuestionStatistic" tabindex="-1">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalQuestionStatisticLabel" >Question past statistic</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<ssr-statistic question="modal.questionStatistic.question"></ssr-statistic>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</main>
 	</body>
 	<!-- Load external library here -->
@@ -171,7 +191,10 @@
 	<script src="js/init_app.js"></script>
 	<script src="js/services/SSEService.js"></script>
 	<script src="js/services/ModalDataService.js"></script>
+	
 	<script src="js/directives/directiveQuestion.js"></script>
+	<script src="js/directives/directiveStatistic.js"></script>
+	
 	<script src="js/controllers/HomePageController.js"></script>
 	<script src="js/controllers/LoginController.js"></script>
 	<script src="js/controllers/NavigationController.js"></script>
