@@ -10,6 +10,13 @@
 			<label ng-bind="question.choices[$index]">Choice 1</label>
 		</li>
 	</ul>
+	<!-- Use hidden input to provide error prompts -->
+	<div name="issuesList" class="form-group">
+		<div ng-repeat="issue in issues track by $index">
+			<input class="form-control is-invalid d-none">
+			<div class="invalid-feedback" ng-bind="issue"></div>
+		</div>
+	</div>
 	<div class="card-body">
 		<input type="submit" class="btn btn-primary" value="Submit response" ng-click="onSubmitResponse(response)">
 		<label class="" ng-show="responseSubmitted">Response has been submitted</label>
