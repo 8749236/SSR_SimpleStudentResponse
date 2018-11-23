@@ -1,44 +1,64 @@
-
-<form id="questionSubmissionForm" class="question-editor">
-	<div class="form-group">
-		<label for="">Question Title</label>
-		<input name="title" class="form-control" type="text" placeholder="Enter a title for your question" ng-model="question.title">
-		<small id="titleHelp" class="form-text text-muted">This will be the one being displayed in question list, cannot be empty</small>
+<div class="card">
+	<div class="card-header">
+		Composing multiple choice question
 	</div>
-	<input name="type" type="hidden" value="mult_choice" readonly>
-	<input name="choiceCount" type="hidden" value="4" readonly>
-	<div class="form-group">
-		<label for="">Description</label>
-		<input name="description" class="form-control" type="text" placeholder="Enter a description for your question" ng-model="question.description">
+	<div class="card-body">
+		<form id="questionSubmissionForm" class="question-editor" novalidate ng-submit="onComposeQuestion()">
+			<div class="form-group">
+				<label for="">Question Title</label>
+				<input name="title" class="form-control" type="text" placeholder="Enter a title for your question" required ng-model="question.title">
+				<small id="titleHelp" class="form-text text-muted">This will be the one being displayed in question list, cannot be empty</small>
+				<div class="invalid-feedback">
+					Question title cannot be empty
+				</div>
+			</div>
+			<input name="type" type="hidden" value="mult_choice" readonly>
+			<input name="choiceCount" type="hidden" value="4" readonly>
+			<div class="form-group">
+				<label for="">Description</label>
+				<input name="description" class="form-control" type="text" placeholder="Enter a description for your question" ng-model="question.description">
+				<small id="titleHelp" class="form-text text-muted">Detailed description of this question, optional</small>
+			</div>
+			
+			<!-- Prompt for no available choices -->
+			<div ng-hide="question.choices.length > 0" class="form-group row">
+				<label class="col-12 text-center">There is no available choice for this question</label>
+			</div>
+			
+			<!-- Expanding available choices -->
+			<div class="form-group row" ng-repeat="choice in question.choices track by $index">
+				<label class="col-6" for="choice{{$index+1}}" ng-bind="'Choice ' + ($index+1)"></label>
+				<div class="col-6	">
+					<input name="answer" type="radio" ng-model="question.answer" value={{$index}} required>
+					<label class="form-check-label" for="answer">
+						Correct
+					</label>
+					<input class="btn btn-danger float-right"
+						ng-click="question.removeChoice($index)" type="button" value="Remove">
+				</div>
+				<div class="col-12">
+					<input id="choice{{$index+1}}" name="choices" class="form-control" type="text" placeholder="Short description for choice {{$index+1}}" required ng-model="question.choices[$index]">			
+					<div class="invalid-feedback">
+						Please provide a short description for this choice
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<input class="btn btn-secondary" type="button" value="Add new choice" ng-click="question.addChoice()">
+			</div>
+			<!-- Use hidden input to provide error prompts -->
+			<div name="issuesList" class="form-group">
+				<div ng-repeat="issue in issues track by $index">
+					<input class="form-control is-invalid d-none">
+					<div class="invalid-feedback" ng-bind="issue"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="submit" class="btn btn-primary" value="Create question">
+				<input type="button" class="btn btn-primary" value="Validate" ng-click="onValidate()">
+				<input type="reset" class="btn btn-danger float-right" value="Reset editor" ng-click="onReset()">
+			</div>
+		</form>
 	</div>
-	
-	<!-- Prompt for no available choices -->
-	<div ng-hide="question.choices.length > 0" class="form-group row">
-		<label class="col-12 text-center">There is no available choice for this question</label>
-	</div>
-	
-	<!-- Expanding available choices -->
-	<div class="form-group row" ng-repeat="choice in question.choices track by $index">
-		<label class="col-6" for="choice{{$index+1}}" ng-bind="'Choice ' + ($index+1)"></label>
-		<div class="col-6	">
-			<input name="answer" type="radio" ng-model="question.answer" value={{$index}}>
-			<label class="form-check-label" for="answer">
-				Correct
-			</label>
-			<input class="btn btn-danger float-right"
-				ng-click="question.removeChoice($index)" type="button" value="Remove">
-		</div>
-		<div class="col-12">
-			<input id="choice{{$index+1}}" ng-model="question.choices[$index]" name="choices" class="form-control" type="text" placeholder="Short description for choice {{$index+1}}">
-		</div>
-	</div>
-	
-	<div class="form-group">
-		<input class="btn btn-secondary" type="button" value="Add new choice" ng-click="question.addChoice()">
-	</div>
-	<div class="form-group">
-		<input type="submit" class="btn btn-primary" value="Create question" ng-click="onComposeQuestion()">
-		<input type="reset" class="btn btn-danger float-right" value="Reset editor">
-	</div>
-	<div></div>
-</form>
+</div>
