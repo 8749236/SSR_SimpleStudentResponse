@@ -26,7 +26,7 @@ app.config(function($routeProvider, $locationProvider) {
     })
 		.when("/composers/", {
         templateUrl : "views/composers.html",
-				controller: "QuestionComposerController"
+				controller: "QuestionComposersController"
     })
     .when("/composers/:question_type", {
         templateUrl : function(params) {
