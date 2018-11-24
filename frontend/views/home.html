@@ -1,17 +1,52 @@
-Home page placeholder
+<div ng-controller="HomePageController">
+	<div class="card">
+		<div class="card-header">Let's get started, with one of the following:</div>
+		<div class="card-body">
+			<!--
+			<button type="button" class="btn btn-primary" ng-click="onGotoLogin()">Login as a user</button>
+			<button type="button" class="btn btn-primary" ng-click="onGotoRegister()">Register an account</button>
+			<button type="button" class="btn btn-primary" ng-click="onGotoQuestions()">View your questions</button>
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalQuestionIdSearch">
+				Find a question
+			</button>
+			<button type="button" class="btn btn-primary" ng-click="onGotoComposer()">Compose a question</button>
+			-->
 
-<div ng-controller="HomePageController" ng-init="
-	options.test = 1
-">
-	What would you like to do?
-	<button type="button" class="btn btn-primary" ng-click="onGotoLogin()">Login as a user</button>
-	<button type="button" class="btn btn-primary" ng-click="onGotoRegister()">Register an account</button>
-	<button type="button" class="btn btn-primary" ng-click="onGotoQuestions()">View your questions</button>
-	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalQuestionIdSearch">
-		Find a question
-	</button>
-	<button type="button" class="btn btn-primary" ng-click="onGotoComposer()">Compose a question</button>
-
+			<div name="home-nav-box" class="card-columns text-center">
+				<div class="card" ng-click="onGotoLogin()">
+					<img src="res/icon_login.bmp">
+					<div class="card-body text-center">
+						<h5 class="card-title">Login as a user</h5>
+					</div>
+				</div>
+				<div class="card" ng-click="onGotoRegister()">
+					<img src="res/icon_register.bmp">
+					<div class="card-body text-center">
+						<h5 class="card-title">Register an account</h5>
+					</div>
+				</div>
+				<div class="card" ng-click="onGotoQuestions()">
+					<img src="res/icon_questionList.bmp">
+					<div class="card-body text-center">
+						<h5 class="card-title">View your questions</h5>
+					</div>
+				</div>
+				<div class="card" data-toggle="modal" data-target="#modalQuestionIdSearch">
+					<img src="res/icon_questionSearch.bmp">
+					<div class="card-body text-center">
+						<h5 class="card-title">Find a question</h5>
+					</div>
+				</div>
+				<div class="card" ng-click="onGotoComposer()">
+					<img src="res/icon_questionEditor.bmp">
+					<div class="card-body text-center">
+						<h5 class="card-title">Compose a question</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	
 	<div class="card border-warning mx-auto" style="max-width: 640px;">
 		<div class="card-header bg-warning text-center">
@@ -20,6 +55,15 @@ Home page placeholder
 		<div class="card-body">
 			<ul class="list-group">
 				<li class="list-group-item">
+					New homepage design does not look sufficiently awesome, add more awesomeness.
+				</li>
+				<li class="list-group-item">
+					Convert BMP icons to SVG
+				</li>
+				<li class="list-group-item">
+					Enhance security by sanitizing inputs from question editor
+				</li>
+				<li class="list-group-item">
 					Create a question composer selection page, right now it is just a dummy with a single button
 				</li>
 				<li class="list-group-item">
@@ -27,7 +71,7 @@ Home page placeholder
 					since that is the only type of question currently available, no need for an extra button click, √
 				</li>
 				<li class="list-group-item">
-					Create icons for homepage: Login, register, questions, search for question, compose question
+					Create icons for homepage: Login, register, questions, search for question, compose question, √
 				</li>
 				<li class="list-group-item">
 					Create issues display directive; currently some invalid input messages are displayed using hidden input
@@ -40,7 +84,7 @@ Home page placeholder
 					Actually implements Statistic.js
 				</li>
 				<li class="list-group-item">
-					Design a new homepage that looks awesome
+					Design a new homepage that looks awesome, √
 				</li>
 				<li class="list-group-item">
 					Convert StatisticController to using ResponseStore to retrieve responses

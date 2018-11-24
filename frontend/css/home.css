@@ -1,0 +1,17 @@
+div[name=home-nav-box] > .card > img {
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	max-width: 256px;
+}
+div[name=home-nav-box] > .card {
+	background-color: #eee;
+}
+
+div[name=home-nav-box] > .card:hover {
+	background-color: #ddd;
+}
+
+div[name=home-nav-box] > .card:active {
+	background-color: #ccc;
+}
