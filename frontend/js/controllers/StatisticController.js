@@ -2,13 +2,17 @@ app.controller("StatisticController", function($scope, $http, $location, $routeP
 	var questionStore = new QuestionStore();
 	var responseStore = new ResponseStore();
 	var chart = null;
+	var absLinkPrefix = "/questions/"
 	$scope.statistic = {};
+	$scope.question = {};
 	$scope.questionId = $routeParams.question_id;
 	
 	SSEService.start($scope);
 	
 	$scope.onQuestionGetSuccess = function(question) {
 		console.log("Acquired question: ", question);
+		$scope.question = question;
+		$scope.link = window.location.origin + absLinkPrefix + question.id;
 		$scope.statistic.question = question;
 		$scope.statistic.choiceCount = question.choices.length;
 		var category = [];
@@ -40,30 +44,6 @@ app.controller("StatisticController", function($scope, $http, $location, $routeP
 	}
 	
 	$scope.$on('$viewContentLoaded', function() {
-		// Configure chart without data
-		chart = Highcharts.chart('statistic_chart_question', {
-			chart: {
-				type: 'column'
-			},
-			series: [{
-				data: []
-			}]
-		});
-		
-		console.log(chart);
-		
-		// Ask for questions
-		questionStore.getQuestion($scope.questionId, $scope.onQuestionGetSuccess);
-	
-		// Ask for statistics
-		$http.get("/api/questions/" + $scope.questionId + "/responses").then(
-			function(e) {
-				$scope.onResponsesGetSuccess(e.data);
-			},
-			function(err) {
-				console.log("Error: ", err);
-			}
-		);
 	});
 	
 	//$scope.$on("SSEService.questions." + $scope.questionId + ".statistics.init", function(e, data) {
@@ -76,7 +56,46 @@ app.controller("StatisticController", function($scope, $http, $location, $routeP
 		chart.series[0].setData($scope.statistic.data);
 	});
 		
+	// Initialization
+	// Configure chart without data
+	chart = Highcharts.chart('statistic_chart_question', {
+		title: {
+			text: 'Real time statistic'
+		},
+		chart: {
+			type: 'column',
+		},
+		legend: {
+			enabled: false
+		},
+		xAxis: {
+			title: {
+				text: "Available choices"
+			}
+		},
+		yAxis: {
+			title: {
+				text: "Number of response"
+			}
+		},
+		series: [{
+			data: []
+		}]
+	});
+	
+	// Ask for questions
+	questionStore.getQuestion($scope.questionId, $scope.onQuestionGetSuccess);
 
+	// Ask for statistics
+	responseStore.getResponseByQuestionId($scope.questionId, $scope.onResponsesGetSuccess);
+	$http.get("/api/questions/" + $scope.questionId + "/responses").then(
+		function(e) {
+			$scope.onResponsesGetSuccess(e.data);
+		},
+		function(err) {
+			console.log("Error: ", err);
+		}
+	);
 
 	// the button action
 	$('#button').click(function () {

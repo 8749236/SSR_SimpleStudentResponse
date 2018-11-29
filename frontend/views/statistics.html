@@ -1,12 +1,30 @@
-<div ng-init="init()">
-Statistics placeholder
-
-<div id="statistic_chart_question"></div>
-
-<div name="question_static_display"></div>
-<button id="button">TEST</button>
-
+<div class="card border-primary">
+	<div class="card-header">
+		Real time response statistic
+	</div>
+	<div class="card-body row">
+		<div class="col-8">
+			<div class="card">
+				<div class="card-header">Statistic chart	</div>
+				<div class="card-body">
+					<div id="statistic_chart_question"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4 card-columns" style="column-count: 1;">
+			<div class="card">
+				<div class="card-header">Available control options</div>
+				<div class="card-body">
+					View question; show responded user counts; show attempts count;
+					show final responses; show first responses; show second responses; show third responses
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-header">Share question</div>
+				<div class="card-body">
+					<sse-share-link link="link"></sse-share>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<script>
-console.log(2);
-</script>
