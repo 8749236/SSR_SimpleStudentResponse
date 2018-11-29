@@ -1,6 +1,7 @@
 app.directive('ssrStatistic', function() {
   return {
 		link: function(scope, element, attrs) {
+			var scopeToWatch = attrs.global != undefined ? scope.$root : scope;
 			// Prepare chart
 			var modalStatisticChart = Highcharts.chart('modal_question_statistic_chart', {
 				title: {
@@ -29,7 +30,7 @@ app.directive('ssrStatistic', function() {
 				}]
 			});
 			// Since modal is global, watch from $root
-			scope.$root.$watch(attrs.responseCounts, function(value) {
+			scopeToWatch.$watch(attrs.responseCounts, function(value) {
 				console.log("Update chart: ", modalStatisticChart);
 				console.log("New data: ", value);				
 				modalStatisticChart.series[0].setData(value);
