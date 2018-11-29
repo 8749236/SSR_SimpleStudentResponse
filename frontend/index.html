@@ -106,16 +106,7 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							<form>
-								<div class="form-group">
-									<label for="questionLink">Question link</label>
-									<input name="questionLink" class="form-control" type="text" ng-model="modal.questionShare.link">
-								</div>							
-								<div class="form-group text-center">
-									<div>Scan this with camera to find question</div>
-									<div id="questionLinkQR"></div>
-								</div>
-							</form>
+							<ssr-share-link global link="modal.questionShare.link"></ssr-share-link>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -196,6 +187,7 @@
 	
 	<script src="js/directives/directiveQuestion.js"></script>
 	<script src="js/directives/directiveStatistic.js"></script>
+	<script src="js/directives/directiveShare.js"></script>
 	
 	<script src="js/controllers/HomePageController.js"></script>
 	<script src="js/controllers/LoginController.js"></script>
