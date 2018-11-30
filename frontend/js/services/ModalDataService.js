@@ -1,6 +1,8 @@
 app.service('ModalDataService', function($rootScope) {
 	// Data object for global modals to pick up data
 	// Helpful when modal does not have a controller
+	// If a modal has a controller, it should use its controller to exchange data
+	// instead of using this service
 	$rootScope.modal = {};
 	
 	// Helper method

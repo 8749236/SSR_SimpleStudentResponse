@@ -78,7 +78,7 @@
 							<form>
 								<div class="form-group">
 									<label for="questionId">Question ID</label>
-									<input name="questionId" class="form-control" type="text" ng-model="modal.questionIdSearch.questionId" placeholder="Enter an id to find a question">
+									<input name="questionId" class="form-control" type="text" ng-model="questionId" placeholder="Enter an id to find a question">
 								</div>
 							</form>
 							<div class="text-center">
@@ -88,8 +88,8 @@
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onGotoStatistic(modal.questionIdSearch.questionId)">Monitor question</button>
-							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onGotoQuestion(modal.questionIdSearch.questionId)">Answer question</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onGotoStatistic(questionId)">Monitor question</button>
+							<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="onGotoQuestion(questionId)">Answer question</button>
 						</div>
 					</div>
 				</div>
