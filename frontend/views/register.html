@@ -1,6 +1,20 @@
-
-<form id="userRegisterForm">
-	<input name="username" type="text" ng-model="data.username" placeholder="Enter your username here">
-	<input name="password" type="password" ng-model="data.password" placeholder="Enter your password here">
-	<input id="btnRegister" type="submit" ng-click="onRegister(data)" value="Register account">
-</form>
+<div class="row justify-content-center">
+	<div class="col-6">
+		<div class="card border-primary">
+			<div class="card-header border-primary">Register your account</div>
+			<div class="card-body">
+				<form id="userRegisterForm">
+					<div class="form-group">
+						<label for="username">Username</label>
+						<input name="username" class="form-control" type="text" ng-model="data.username" placeholder="Enter your username here">
+					</div>
+					<div class="form-group">
+						<label for="password">Password</label>
+						<input name="password" class="form-control" type="password" ng-model="data.password" placeholder="Enter your password here">
+					</div>
+					<input id="btnRegister" class="btn btn-primary" type="submit" ng-click="onRegister(data)" value="Register account">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
