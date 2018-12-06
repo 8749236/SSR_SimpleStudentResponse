@@ -17,7 +17,7 @@ app.controller('QuestionEditorController', function($scope, $location) {
 		$scope.onComposeQuestion = function() {
 			var issues = $scope.onValidate();
 			if(Object.keys(issues).length == 0) {
-				//$scope.question.upload();
+				$scope.question.upload();
 			}
 		};
 });
