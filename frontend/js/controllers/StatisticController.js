@@ -88,14 +88,6 @@ app.controller("StatisticController", function($scope, $http, $location, $routeP
 
 	// Ask for statistics
 	responseStore.getResponseByQuestionId($scope.questionId, $scope.onResponsesGetSuccess);
-	$http.get("/api/questions/" + $scope.questionId + "/responses").then(
-		function(e) {
-			$scope.onResponsesGetSuccess(e.data);
-		},
-		function(err) {
-			console.log("Error: ", err);
-		}
-	);
 
 	// the button action
 	$('#button').click(function () {
