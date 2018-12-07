@@ -110,8 +110,7 @@ app.post('/api/users', upload.fields([]), function(req, res, next) {
 	// Perhaps use validator module?
 	
 	var userNew = userManager.createUserFromForm(formData);
-	userNew.timeCreated = new MongoClient.Timestamp();
-	userNew.timeModified = new MongoClient.Timestamp();
+	
 	collections.users.insertOne(userNew, function(err, newDoc) {
 		if(err) {
 			if(err.errorType == "uniqueViolated") {
@@ -207,8 +206,6 @@ app.post('/api/questions', upload.fields([]), checkAuth, function(req, res, next
 	var formData = req.body;
 	var questionNew = questionManager.createQuestionFromForm(formData);
 	questionNew.setOwner(req.session.user.username);
-	questionNew.timeCreated = new MongoClient.Timestamp();
-	questionNew.timeModified = new MongoClient.Timestamp();
 	collections.questions.insertOne(questionNew, function(err, newDoc) { 
 		if(err) {
 			res.status(500).json(err);
@@ -273,16 +270,15 @@ app.post('/api/responses', upload.fields([]), checkAuth, function(req, res, next
 	}
 	var responseNew = responseManager.createResponseFromForm(formData);
 	responseNew.setOwner(req.session.user.username);
-	responseNew.timeCreated = new MongoClient.Timestamp();
-	collections.responses.insertOne(responseNew, function(err, rslt) { 
+	collections.responses.insertOne(responseNew, function(err, newDoc) { 
 		if(err) {
 			res.status(500).json(err);
 		} else {
 			// 201 - CREATED..
-			res.status(201).json(rslt.insertedId.toString());
+			res.status(201).json(newDoc.insertedId.toString());
 			
 			// Notify all listening browser
-			sse.sendAll("questions." + formData.questionId + ".responses.update", rslt.ops[0]);
+			sse.sendAll("questions." + formData.questionId + ".responses.update", newDoc);
 		}
 		return next();
 	});
