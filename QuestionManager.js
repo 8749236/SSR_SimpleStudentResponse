@@ -1,13 +1,19 @@
 module.exports = {
 	createQuestionFromForm: function(form) {
 		var question = new QuestionBase(form.title);
+		var tmp = Object.assign({}, form);
+		question.setOwner(form.owner);
 		question.setDescription(form.description);
 		question.setType(form.type);
-		var tmp = Object.assign({}, form);
+		question.timeCreated = form.timeCreated;
+		question.timeModified = form.timeModified;
+		delete tmp.id;
 		delete tmp.title;
 		delete tmp.description;
 		delete tmp.type;
-		delete tmp.owner ; // Do NOT accept owners specified by frontend
+		delete tmp.owner;
+		delete tmp.timeCreated;
+		delete tmp.timeModified;
 		question.setData(tmp);
 		return question;
 	}, 
@@ -17,6 +23,8 @@ module.exports = {
 		question.setType(dbEntry.type);
 		question.setData(dbEntry.data);
 		question.setOwner(dbEntry.owner);
+		question.timeCreated = dbEntry.timeCreated;
+		question.timeModified = dbEntry.timeModified;
 		return question;
 	},
 }

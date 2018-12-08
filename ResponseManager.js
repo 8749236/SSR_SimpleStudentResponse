@@ -2,15 +2,20 @@ module.exports = {
 	createResponseFromForm: function(form) {
 		var response = new ResponseBase(form.questionId);
 		var tmp = Object.assign({}, form);
+		response.setOwner(form.owner);
 		response.setType(form.type);
 		response.setAnswer(form.answer);
+		response.timeCreated = form.timeCreated;
 		
 		// Store rest of the attributes as extra data
 		// Instead of discarding
+		delete tmp.id;
 		delete tmp.questionId;
 		delete tmp.type;
 		delete tmp.answer;
-		delete tmp.owner ; // Do NOT accept owners specified by frontend
+		delete tmp.owner;
+		delete tmp.timeCreated;
+		delete tmp.timeModified;
 		response.setData(tmp);
 		return response;
 	}, 
@@ -20,13 +25,15 @@ module.exports = {
 		response.setAnswer(dbEntry.answer);
 		response.setData(dbEntry.data);
 		response.setOwner(dbEntry.owner);
+		response.timeCreated = dbEntry.timeCreated;
+		response.timeModified = dbEntry.timeModified;
 		return response;
 	},
 }
 
 class ResponseBase {
 	// It does not make sense to talk about response
-	// without context, i.e. question
+	// without context, say a question
 	// So each response shall store its associated question id
 	// and response does not care the content it holds
 	// Shifting the concerns to other components that cares about 

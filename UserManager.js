@@ -3,7 +3,16 @@ const crypto = require('crypto');
 module.exports = {
 	createUserFromForm : function(form) {
 		var user = new UserBase(form.username);
+		var tmp = Object.assign({}, form);
 		user.setPassword(form.password);
+		user.timeCreated = form.timeCreated;
+		user.timeModified = form.timeModified;
+		delete tmp.id;
+		delete tmp.username;
+		delete tmp.password;
+		delete tmp.timeCreated;
+		delete tmp.timeModified;
+		user.data = tmp;
 		return user
 	},
 	createUserFromDBEntry : function(dbEntry) {
@@ -12,6 +21,8 @@ module.exports = {
 		user._salt = dbEntry._salt;
 		user._saltedHash = dbEntry._saltedHash;
 		user.data = dbEntry.data;
+		user.timeCreated = dbEntry.timeCreated;
+		user.timeModified = dbEntry.timeModified;
 		return user;
 	}
 }
