@@ -78,8 +78,8 @@ class QuestionBase extends ICRUD {
 		this.type = rawData.type ? rawData.type : null;
 		this.answer = rawData.answer ? rawData.answer : null;
 		this.owner = rawData.owner ? rawData.owner : null;
-		this.timeCreated = rawData.timeCreated ? rawData.timeCreated : null;
-		this.timeModified = rawData.timeModified ? rawData.timeModified : null;
+		this.timeCreated = rawData.timeCreated ? new Date(rawData.timeCreated) : null;
+		this.timeModified = rawData.timeModified ? new Date(rawData.timeModified) : null;
 	}
 
 	validate() {throw new Error(SSR_ERRORS.UNIMPLEMENTED_METHOD);};

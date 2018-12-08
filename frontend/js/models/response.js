@@ -55,7 +55,7 @@ class ResponseBase extends ICRUD {
 		this.type = rawData.type ? rawData.type : null;
 		this.answer = rawData.answer ? rawData.answer : null;
 		this.owner = rawData.owner ? rawData.owner : null;
-		this.timeCreated = rawData.timeCreated ? rawData.timeCreated : null;
+		this.timeCreated = rawData.timeCreated ? new Date(rawData.timeCreated) : null;
 	}
 
 	validate() {throw new Error(SSR_ERRORS.UNIMPLEMENTED_METHOD);};

@@ -3,8 +3,8 @@ class User {
 		this.username = rawData.username;
 		this.password = rawData.password;
 		this.data = rawData.data ? rawData.data : {};
-		this.timeCreated = rawData.timeCreated ? rawData.timeCreated : null;
-		this.timeModified = rawData.timeModified ? rawData.timeModified : null;
+		this.timeCreated = rawData.timeCreated ? new Date(rawData.timeCreated) : null;
+		this.timeModified = rawData.timeModified ? new Date(rawData.timeModified) : null;
 	}
 	
 	
