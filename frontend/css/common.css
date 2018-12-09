@@ -1,6 +1,8 @@
 .panel {
 	border-radius: 8px;
 	box-shadow: 0px 0px 16px rgba(11, 25, 185, 0.2);
+	padding-top: 16px;
+	padding-bottom: 16px;
 }
 
 .question-editor {

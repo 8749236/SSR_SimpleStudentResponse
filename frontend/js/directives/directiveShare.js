@@ -7,6 +7,7 @@ app.directive('ssrShareLink', function() {
 				if(value) {
 					$("#linkToShareQR").empty();
 					$("#linkToShareQR").qrcode(value);
+					$("#linkToShareQR > canvas").css("width", "85%");
 				}
 			});
 		},
