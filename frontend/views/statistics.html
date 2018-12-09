@@ -1,30 +1,58 @@
-<div class="card border-primary">
-	<div class="card-header">
-		Real time response statistic
-	</div>
-	<div class="card-body row">
-		<div class="col-8">
-			<div class="card">
-				<div class="card-header">Statistic chart	</div>
-				<div class="card-body">
-					<div id="statistic_chart_question"></div>
-				</div>
+<div class="row d-flex" style="align-items: center; justify-content: center;">
+	<div class="col-sm-12 col-md-8">
+		<div class="card border-primary mb-3">
+			<div class="card-header">Question response statistic</div>
+			<div class="card-body">
+				<div id="statistic_chart_question"></div>
+			</div>
+			<div class="card-footer">
+				<small class="text-muted">Status: <span ng-bind="statusText"></span></small>
 			</div>
 		</div>
-		<div class="col-4 card-columns" style="column-count: 1;">
-			<div class="card">
-				<div class="card-header">Available control options</div>
-				<div class="card-body">
-					View question; show responded user counts; show attempts count;
-					show final responses; show first responses; show second responses; show third responses
+		
+		<div class="card collapse mb-3" id="collapseQuestionPreview">
+			<div class="card-header">Preview question</div>
+			<div class="card-body"><ssr-question question="question"></ssr-question></div>
+		</div>
+	</div>
+	<div class="col-sm-12 col-md-4">	
+		<div class="card mb-3">
+			<div class="card-header">Available control options</div>
+			<div class="card-body text-center">
+				<div class="btn-group-vertical"><!--d-sm-none d-md-inline-flex-->
+					<button class="btn btn-info" data-toggle="collapse" data-target="#collapseQuestionPreview">Preview question</button>
+					<button class="btn btn-info" data-toggle="collapse" data-target="#collapseQuestionShare">Share question</button>
+					<button class="btn btn-primary" ng-disabled="live" ng-click="onAnalyzeData()">Analyze data</button>
+					<button class="btn btn-primary" disabled>Get historical data</button>
+					<button class="btn btn-danger" ng-click="onToggleMonitoring()" ng-bind="live ? 'Stop monitoring' : 'Start monitoring'">Stop monitoring</button>
+					<button class="btn btn-danger" disabled>Clear statistic data</button>
+					<!--<button> class="btn-info">Set timer</button>-->
 				</div>
+				<!--	For md size only
+					d-none d-sm-inline-flex d-md-none
+					Vertical group
+						Preview question
+						Share question
+					Vertical group
+						Analyze data
+						Get historical data
+					Vertical group
+						Start/Stop monitoring
+						Clear statistic data
+				-->
 			</div>
-			<div class="card">
-				<div class="card-header">Share question</div>
-				<div class="card-body">
-					<ssr-share-link link="link"></ssr-share>
-				</div>
+			<div class="card-footer">
+				<small class="text-muted">Stop monitoring before analyzing data</small><br />
+				<small class="text-muted">Clearing data will not delete responses for this question</small>
 			</div>
+		</div>
+		<div class="card collapse mb-3" id="collapseQuestionPreview">
+			<div class="card-header">Preview question</div>
+			<div class="card-body"><ssr-question question="question"></ssr-question></div>
+		</div>
+		<div class="card mb-3 collapse" id="collapseQuestionShare" >
+			<div class="card-header">Share question</div>
+			<div class="card-body"><ssr-share-link link="link"></ssr-share></div>
 		</div>
 	</div>
 </div>
