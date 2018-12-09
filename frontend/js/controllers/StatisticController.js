@@ -26,15 +26,22 @@ app.controller("StatisticController", function($scope, $http, $location, $routeP
 		var data = [
 			{
 			name: "Total selection count",
-			data: [2, 4, 7, 3]
+			data: [5, 8, 22, 13]
 			},
 			{
 			name: "Attempts 1",
-			data: [4, 2, 3, 7]
+			data: [4, 2, 3, 7],
+			stacking: "normal"
 			},
 			{
 			name: "Attempts 2",
-			data: [0, 5, 5, 6]
+			data: [0, 5, 5, 6],
+			stacking: "normal"
+			},
+			{
+			name: "Attempts 3",
+			data: [1, 1, 14, 0],
+			stacking: "normal"
 			},
 		];
 		for(var i in data) {
